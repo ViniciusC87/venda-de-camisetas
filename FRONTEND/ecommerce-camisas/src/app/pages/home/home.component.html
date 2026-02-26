@@ -1,0 +1,31 @@
+<section style="background: #1a1a1a; color: white; padding: 80px 20px; text-align: center; font-family: sans-serif;">
+  <h1 style="font-size: 3rem; margin-bottom: 10px;">Vini Camisas Store ⚽</h1>
+  <p style="font-size: 1.2rem; color: #ccc; margin-bottom: 30px;">O manto sagrado do seu time está aqui.</p>
+
+  <div style="max-width: 600px; margin: 0 auto; display: flex; gap: 10px;">
+    <input type="text" #buscaInput placeholder="Qual camisa você procura?" 
+           style="flex: 1; padding: 15px; border-radius: 8px; border: none; font-size: 1rem;">
+    <button [routerLink]="['/busca']" [queryParams]="{ q: buscaInput.value }"
+            style="background: #27ae60; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+      PESQUISAR
+    </button>
+  </div>
+</section>
+
+<section style="padding: 50px 20px; font-family: sans-serif; background: #f4f4f4;">
+  <h2 style="text-align: center; margin-bottom: 40px;">🔥 Destaques da Coleção</h2>
+  
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    @for (produto of produtosDestaque; track produto.id) {
+      <div style="background: white; border-radius: 10px; width: 250px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center;">
+        <img [src]="produto.imagem_url" alt="Camisa" style="width: 100%; border-radius: 5px; margin-bottom: 15px;">
+        <h3 style="font-size: 1.1rem;">{{ produto.nome }}</h3>
+        <p style="color: #27ae60; font-size: 1.3rem; font-weight: bold; margin: 10px 0;">{{ produto.preco | currency:'BRL' }}</p>
+        <button (click)="adicionarAoCarrinho(produto)" 
+                style="width: 100%; background: #111; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+          VER PRODUTO
+        </button>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,28 @@
+<div style="max-width: 500px; margin: 50px auto; padding: 30px; border: 1px solid #eee; border-radius: 10px; font-family: sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+  <h2 style="text-align: center; margin-bottom: 25px;">Finalizar Pedido 🛒</h2>
+  
+  <form #formCadastro="ngForm" (ngSubmit)="finalizarPedido()">
+    <div style="margin-bottom: 15px;">
+      <label>Nome Completo:</label>
+      <input type="text" name="nome" [(ngModel)]="cliente.nome" required 
+             style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <label>E-mail:</label>
+      <input type="email" name="email" [(ngModel)]="cliente.email" required
+             style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
+    </div>
+
+    <div style="margin-bottom: 25px;">
+      <label>Endereço de Entrega:</label>
+      <textarea name="endereco" [(ngModel)]="cliente.endereco" required
+                style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; height: 80px;"></textarea>
+    </div>
+
+    <button type="submit" [disabled]="!formCadastro.valid"
+            style="width: 100%; background: #27ae60; color: white; border: none; padding: 15px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1rem;">
+      IR PARA O PAGAMENTO
+    </button>
+  </form>
+</div>
