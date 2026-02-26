@@ -1,0 +1,23 @@
+/* Estilos básicos para o painel */
+.admin-container {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.card-admin {
+    border: none;
+    transition: transform 0.3s;
+}
+
+.btn-edit {
+    transition: 0.2s;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3 !important;
+}
+
+table th {
+    font-weight: 600;
+    color: #333;
+}

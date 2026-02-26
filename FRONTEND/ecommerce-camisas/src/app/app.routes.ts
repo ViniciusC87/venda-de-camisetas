@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { CadastroProdutoComponent } from './pages/admin/cadastro-produto/cadastro-produto.component';
+import { CadastrarProdutoComponent } from './pages/admin/cadastro-produto/cadastro-produto.component';
 import { BuscaComponent } from './pages/busca/busca.component';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { PagamentoComponent } from './pages/pagamento/pagamento.component';
@@ -24,7 +24,7 @@ export const routes: Routes = [
   },
   { 
     path: 'admin/cadastrar-produto', 
-    component: CadastroProdutoComponent 
+    component: CadastrarProdutoComponent 
   },
   { 
     path: '**', 
