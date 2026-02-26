@@ -1,22 +1,18 @@
 const express = require('express');
-//estanciando express
-const app = express();
-// estanciando ferramentas dentro de app
-const PORT = 3000;
-// porta logica onde vamos trabalhar
-const cors = require('cors'); // 1. Importa
-app.use(cors());              // 2. Libera o acesso (coloque logo abaixo do express())
-app.use(express.json());
-// usar express para traduzir com a função json
-
+const cors = require('cors'); 
 const routes = require('./routes');
-// Como o server.js e o routes.js agora estão na mesma pasta (src), 
-// o './routes' funciona perfeitamente.
+
+const app = express();
+const PORT = 3000;
+
+app.use(cors());
+
+// Aumenta o limite para 10MB para que a imagem enviada pelo Angular passe sem erro
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(routes);
-// usando as rotas configuradas no arquivo routes.js
 
-app.listen(PORT,()=>{
-// ligar meu servidor na port 3000
-    console.log('🚀servidor ativo🚀');
+app.listen(PORT, () => {
+    console.log('🚀 Servidor ativo e aceitando imagens pesadas! 🚀');
 });

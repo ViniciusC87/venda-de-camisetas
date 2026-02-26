@@ -30,7 +30,7 @@ export class CadastrarProdutoComponent implements OnInit {
     this.carregarProdutos();
   }
 
-  // MÉTODO PARA O SEU SOBRINHO: Escolhe a foto e já vê o resultado
+  // MÉTODO PARA O SEU SOBRINHO: Escolhe a foto, diminui o peso e mostra o preview
   aoSelecionarArquivo(event: any) {
     const arquivo = event.target.files[0];
     if (arquivo) {
@@ -42,15 +42,15 @@ export class CadastrarProdutoComponent implements OnInit {
           // Criamos um canvas para diminuir o tamanho da imagem (compressão)
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
-          const MAX_WIDTH = 400; // Tamanho pequeno para o banco aceitar
+          const MAX_WIDTH = 400; // Tamanho ideal para web
           const scaleSize = MAX_WIDTH / img.width;
           canvas.width = MAX_WIDTH;
           canvas.height = img.height * scaleSize;
 
           ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
           
-          // A mágica: transforma em uma imagem leve
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.7); 
+          // Transforma em uma imagem leve (JPEG com 50% de qualidade)
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.5); 
           this.produto.imagem_url = dataUrl;
           this.previewImagem = dataUrl;
           this.cdr.detectChanges();
@@ -95,7 +95,8 @@ export class CadastrarProdutoComponent implements OnInit {
         this.carregando = false;
       },
       error: (err) => {
-        alert("Erro ao salvar. A imagem ainda pode estar muito grande para o seu banco.");
+        console.error(err);
+        alert("Erro ao salvar. Verifique se a imagem não é grande demais.");
         this.carregando = false;
       }
     });
