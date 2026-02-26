@@ -19,7 +19,7 @@ export class BuscaComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-    // Monitora a URL para ver o que foi pesquisado
+    // Monitora a URL para ver o que foi pesquisado na Home
     this.route.queryParams.subscribe(params => {
       this.termoBusca = params['q'] || '';
       this.buscarProdutos();
@@ -34,8 +34,9 @@ export class BuscaComponent implements OnInit {
           p.nome.toLowerCase().includes(this.termoBusca.toLowerCase())
         ).map(p => ({ ...p, preco: Number(p.preco) }));
         
-        this.cdr.detectChanges(); // Atualiza a tela (Zoneless)
-      }
+        this.cdr.detectChanges(); // Garante a atualização da tela
+      },
+      error: (err) => console.error('Erro ao buscar produtos:', err)
     });
   }
 }

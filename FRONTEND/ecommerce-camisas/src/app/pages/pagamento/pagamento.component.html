@@ -1,69 +1,76 @@
-<div style="max-width: 600px; margin: 40px auto; padding: 30px; font-family: sans-serif; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); background: white;">
-  <h2 style="text-align: center; margin-bottom: 30px;">Como deseja pagar? 💳</h2>
+<div style="max-width: 600px; margin: 40px auto; padding: 30px; font-family: 'Segoe UI', sans-serif; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: white;">
+  
+  <h2 style="text-align: center; margin-bottom: 30px; font-weight: 700;">Como deseja pagar? 💳</h2>
 
   <div style="display: flex; gap: 10px; margin-bottom: 30px;">
     <button (click)="metodoSelecionado = 'pix'" 
-            [style.background]="metodoSelecionado === 'pix' ? '#27ae60' : '#eee'"
+            [style.background]="metodoSelecionado === 'pix' ? '#000' : '#f4f4f4'"
             [style.color]="metodoSelecionado === 'pix' ? 'white' : '#333'"
-            style="flex: 1; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+            style="flex: 1; padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s;">
       PIX
     </button>
     <button (click)="metodoSelecionado = 'cartao'" 
-            [style.background]="metodoSelecionado === 'cartao' ? '#27ae60' : '#eee'"
+            [style.background]="metodoSelecionado === 'cartao' ? '#000' : '#f4f4f4'"
             [style.color]="metodoSelecionado === 'cartao' ? 'white' : '#333'"
-            style="flex: 1; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+            style="flex: 1; padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s;">
       CARTÃO
     </button>
     <button (click)="metodoSelecionado = 'boleto'" 
-            [style.background]="metodoSelecionado === 'boleto' ? '#27ae60' : '#eee'"
+            [style.background]="metodoSelecionado === 'boleto' ? '#000' : '#f4f4f4'"
             [style.color]="metodoSelecionado === 'boleto' ? 'white' : '#333'"
-            style="flex: 1; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+            style="flex: 1; padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s;">
       BOLETO
     </button>
   </div>
 
   <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 30px;">
 
-  <div *ngIf="metodoSelecionado === 'pix'" style="text-align: center;">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=vinicamisas" alt="QR Code">
-    <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">Aponte a câmera ou copie o código abaixo:</p>
-    <div style="background: #f9f9f9; padding: 10px; font-size: 0.7rem; border-radius: 5px; border: 1px dashed #ccc; margin: 15px 0;">
+  <div *ngIf="metodoSelecionado === 'pix'" style="text-align: center; animation: fadeIn 0.5s;">
+    <div style="background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px solid #eee; display: inline-block;">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=vinicamisas" alt="QR Code">
+    </div>
+    <p style="margin-top: 20px; font-size: 0.95rem; color: #666;">Aponte a câmera ou copie o código abaixo:</p>
+    <div style="background: #f9f9f9; padding: 12px; font-size: 0.75rem; border-radius: 8px; border: 1px dashed #bbb; margin: 15px 0; word-break: break-all; color: #555;">
       {{ codigoPix }}
     </div>
-    <button (click)="copiarPix()" style="color: #27ae60; background: none; border: 1px solid #27ae60; padding: 8px 20px; border-radius: 5px; cursor: pointer;">Copiar Código</button>
+    <button (click)="copiarPix()" style="color: #000; background: none; border: 2px solid #000; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold;">
+      Copiar Código PIX 📋
+    </button>
   </div>
 
-  <div *ngIf="metodoSelecionado === 'cartao'">
+  <div *ngIf="metodoSelecionado === 'cartao'" style="animation: fadeIn 0.5s;">
     <div style="margin-bottom: 15px;">
-      <label style="display: block; font-size: 0.8rem; margin-bottom: 5px;">Número do Cartão:</label>
-      <input type="text" [(ngModel)]="cartao.numero" placeholder="0000 0000 0000 0000" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px;">
+      <label style="display: block; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">Número do Cartão:</label>
+      <input type="text" [(ngModel)]="cartao.numero" placeholder="0000 0000 0000 0000" style="width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 10px; outline: none;">
     </div>
     <div style="margin-bottom: 15px;">
-      <label style="display: block; font-size: 0.8rem; margin-bottom: 5px;">Nome Impresso:</label>
-      <input type="text" [(ngModel)]="cartao.nome" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px;">
+      <label style="display: block; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">Nome no Cartão:</label>
+      <input type="text" [(ngModel)]="cartao.nome" placeholder="NOME COMO NO CARTÃO" style="width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 10px; outline: none;">
     </div>
     <div style="display: flex; gap: 15px;">
       <div style="flex: 2;">
-        <label style="display: block; font-size: 0.8rem; margin-bottom: 5px;">Validade:</label>
-        <input type="text" [(ngModel)]="cartao.validade" placeholder="MM/AA" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px;">
+        <label style="display: block; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">Validade:</label>
+        <input type="text" [(ngModel)]="cartao.validade" placeholder="MM/AA" style="width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 10px; outline: none;">
       </div>
       <div style="flex: 1;">
-        <label style="display: block; font-size: 0.8rem; margin-bottom: 5px;">CVV:</label>
-        <input type="text" [(ngModel)]="cartao.cvv" placeholder="123" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px;">
+        <label style="display: block; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">CVV:</label>
+        <input type="text" [(ngModel)]="cartao.cvv" placeholder="123" style="width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 10px; outline: none;">
       </div>
     </div>
-    <button (click)="confirmarPagamento()" style="width: 100%; background: #27ae60; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 25px; cursor: pointer; font-weight: bold;">
-      FINALIZAR COM CARTÃO
+    <button (click)="confirmarPagamento()" style="width: 100%; background: #27ae60; color: white; border: none; padding: 16px; border-radius: 12px; margin-top: 30px; cursor: pointer; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);">
+      FINALIZAR PAGAMENTO ✅
     </button>
   </div>
 
-  <div *ngIf="metodoSelecionado === 'boleto'" style="text-align: center; padding: 20px;">
-    <div style="font-size: 40px;">📄</div>
-    <p>O boleto será enviado para o seu e-mail e vence em 3 dias úteis.</p>
-    <button (click)="confirmarPagamento()" style="width: 100%; background: #27ae60; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 25px; cursor: pointer; font-weight: bold;">
-      GERAR BOLETO
+  <div *ngIf="metodoSelecionado === 'boleto'" style="text-align: center; padding: 20px; animation: fadeIn 0.5s;">
+    <div style="font-size: 60px; margin-bottom: 20px;">📄</div>
+    <p style="color: #444; line-height: 1.6;">O boleto será gerado e enviado para o seu e-mail cadastrado.<br><strong>Vencimento em 3 dias úteis.</strong></p>
+    <button (click)="confirmarPagamento()" style="width: 100%; background: #000; color: white; border: none; padding: 16px; border-radius: 12px; margin-top: 30px; cursor: pointer; font-weight: bold;">
+      GERAR BOLETO AGORA
     </button>
   </div>
 
-  <button routerLink="/" style="width: 100%; background: #111; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 15px; cursor: pointer;">Voltar para Home</button>
+  <button routerLink="/" style="width: 100%; background: none; color: #999; border: none; padding: 15px; margin-top: 20px; cursor: pointer; font-size: 0.9rem;">
+    Cancelar e voltar para a loja
+  </button>
 </div>

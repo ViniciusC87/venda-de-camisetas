@@ -1,0 +1,33 @@
+<div style="max-width: 500px; margin: 50px auto; padding: 25px; border: 1px solid #ddd; border-radius: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+  <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Área do Admin - Novo Produto ⚽</h2>
+  
+  <div style="display: flex; flex-direction: column; gap: 15px;">
+    <div>
+      <label style="font-weight: bold; color: #555;">Nome da Camisa:</label>
+      <input type="text" [(ngModel)]="novoProduto.nome" placeholder="Ex: Camisa Argentina 2026" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-top: 5px;">
+    </div>
+
+    <div>
+      <label style="font-weight: bold; color: #555;">Descrição Detalhada:</label>
+      <textarea [(ngModel)]="novoProduto.descricao" placeholder="Ex: Patch bordado, tecnologia dry-fit..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-top: 5px; height: 80px;"></textarea>
+    </div>
+
+    <div>
+      <label style="font-weight: bold; color: #555;">Preço de Venda (R$):</label>
+      <input type="number" [(ngModel)]="novoProduto.preco" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-top: 5px;">
+    </div>
+
+    <div>
+      <label style="font-weight: bold; color: #555;">URL da Imagem:</label>
+      <input type="text" [(ngModel)]="novoProduto.imagem_url" placeholder="http://link-da-imagem.jpg" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-top: 5px;">
+    </div>
+
+    <button (click)="salvarProduto()" style="background: #1a73e8; color: white; padding: 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; transition: background 0.3s;">
+      FINALIZAR CADASTRO NO BANCO
+    </button>
+    
+    <button (click)="cancelar()" style="background: none; color: #d93025; border: none; cursor: pointer; text-decoration: underline; font-size: 14px;">
+      Desistir e voltar para a loja
+    </button>
+  </div>
+</div>

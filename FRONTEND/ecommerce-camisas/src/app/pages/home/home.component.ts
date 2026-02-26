@@ -1,39 +1,39 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { ProdutoService } from '../../services/produto';
-import { CarrinhoService } from '../../services/carrinho.service';
-import { Produto } from '../../models/produto.model';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.component.html'
 })
-export class HomeComponent implements OnInit {
-  produtosDestaque: Produto[] = [];
-  
-  private produtoService = inject(ProdutoService);
-  private cdr = inject(ChangeDetectorRef);
-  private carrinhoService = inject(CarrinhoService);
+export class HomeComponent {
+  termoPesquisa: string = '';
+  mostrarLogin = false;
+  adminEmail = '';
+  adminSenha = '';
 
-  ngOnInit(): void {
-    // Buscamos os produtos do seu banco para mostrar na Home
-    this.produtoService.listarTodos().subscribe({
-      next: (dados) => {
-        this.produtosDestaque = dados.slice(0, 4).map(p => ({
-          ...p,
-          preco: Number(p.preco)
-        }));
-        this.cdr.detectChanges(); // Essencial para o modo Zoneless
-      },
-      error: (err) => console.error('Erro ao carregar Home:', err)
-    });
+  private router = inject(Router);
+
+  irParaBusca() {
+    if (this.termoPesquisa.trim()) {
+      // Navega para a página de busca passando o termo como parâmetro
+      this.router.navigate(['/busca'], { queryParams: { q: this.termoPesquisa } });
+    }
   }
 
-  adicionarAoCarrinho(produto: Produto) {
-    this.carrinhoService.adicionar(produto);
-    alert(`${produto.nome} foi para o seu carrinho! 🛒`);
+  abrirLoginAdmin() {
+    this.mostrarLogin = true;
+  }
+
+  autenticarAdmin() {
+    if (this.adminEmail === 'admin@vinistore.com' && this.adminSenha === '123456') {
+      this.mostrarLogin = false;
+      this.router.navigate(['/admin/cadastrar-produto']);
+    } else {
+      alert('Acesso negado!');
+    }
   }
 }

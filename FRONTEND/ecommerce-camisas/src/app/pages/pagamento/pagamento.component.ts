@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './pagamento.component.html'
 })
 export class PagamentoComponent {
-  metodoSelecionado: string = 'pix'; // Padrão começa no PIX
+  metodoSelecionado: string = 'pix'; // Começa com PIX por padrão
   codigoPix = '00020126330014BR.GOV.BCB.PIX0111vinicamisas2026';
   
   cartao = {
@@ -22,10 +22,12 @@ export class PagamentoComponent {
 
   copiarPix() {
     navigator.clipboard.writeText(this.codigoPix);
-    alert('Código PIX copiado! 📋');
+    alert('Código PIX copiado com sucesso! 📋');
   }
 
   confirmarPagamento() {
-    alert(`Pagamento via ${this.metodoSelecionado.toUpperCase()} processado com sucesso! 🎉`);
+    const metodo = this.metodoSelecionado.toUpperCase();
+    alert(`Sucesso! Seu pagamento via ${metodo} está sendo processado. 🎉`);
+    // Aqui você poderia redirecionar para uma página de "Obrigado"
   }
 }
