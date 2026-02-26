@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './cadastro-produto.component.html'
 })
 export class CadastroProdutoComponent {
+  // Objeto que será enviado para o MySQL via Node.js
   novoProduto = {
     nome: '',
     descricao: '',
@@ -23,15 +24,21 @@ export class CadastroProdutoComponent {
   private router = inject(Router);
 
   salvarProduto() {
-    // Endereço do seu servidor Node.js que acessa o MySQL
+    // Verificação básica antes de enviar
+    if (!this.novoProduto.nome || !this.novoProduto.preco || !this.novoProduto.imagem_url) {
+      alert('Por favor, preencha o nome, preço e a imagem! ⚠️');
+      return;
+    }
+
+    // Endereço do seu servidor Node.js (Certifique-se que ele está rodando!)
     this.http.post('http://localhost:3000/produtos', this.novoProduto).subscribe({
       next: () => {
         alert('Manto cadastrado com sucesso! 🏆');
         this.router.navigate(['/']); 
       },
       error: (err) => {
-        console.error(err);
-        alert('Erro ao salvar. Verifique se o terminal do BACKEND está rodando!');
+        console.error('Erro na conexão:', err);
+        alert('Erro ao salvar. Verifique se o terminal do BACKEND está aberto e rodando!');
       }
     });
   }
