@@ -1,0 +1,41 @@
+<header style="background: #111; color: white; padding: 20px; text-align: center; font-family: sans-serif;">
+  <h1 style="margin: 0;">👕 VINI CAMISAS STORE</h1>
+  <h2 style="margin-top: 10px;">🛒 Carrinho: {{ itensCarrinho.length }} item(s)</h2>
+</header>
+
+<main style="padding: 20px; font-family: sans-serif; background: #f9f9f9; min-height: 100vh;">
+  <h2 style="text-align:center;">Produtos Disponíveis ({{ produtos.length }})</h2>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    @for (produto of produtos; track produto.id) {
+      <div style="background: white; border-radius: 10px; width: 250px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center;">
+        <h3>{{ produto.nome }}</h3>
+        <p style="color: #27ae60; font-size: 20px; font-weight: bold;">{{ produto.preco | currency:'BRL' }}</p>
+        <button (click)="adicionar(produto)" style="width: 100%; background: #27ae60; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+          ADICIONAR AO CARRINHO
+        </button>
+      </div>
+    } @empty {
+      <p>Buscando produtos no servidor... 📦</p>
+    }
+  </div>
+
+  <hr style="margin: 40px 0;">
+
+  <h2 style="text-align:center;">Seu Carrinho</h2>
+  <div style="max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+    @if (itensCarrinho.length === 0) {
+      <p style="text-align:center;">O carrinho está vazio 🛒</p>
+    } @else {
+      @for (item of itensCarrinho; track $index) {
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0;">
+          <span>{{ item.nome }} - <strong>{{ item.preco | currency:'BRL' }}</strong></span>
+          <button (click)="carrinhoService.remover($index)" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">
+            REMOVER
+          </button>
+        </div>
+      }
+      <h3 style="text-align:right; margin-top: 20px; color: #333;">Total: {{ total | currency:'BRL' }}</h3>
+    }
+  </div>
+</main>
