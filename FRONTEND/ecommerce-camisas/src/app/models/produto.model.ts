@@ -4,5 +4,6 @@ export interface Produto {
   descricao: string;
   preco: number;
   imagem_url: string;
-  disponivel: number;
+  estoque: number; // <-- ADICIONADO: Agora o Angular aceita o número do estoque
+  disponivel: boolean;
 }

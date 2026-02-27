@@ -1,31 +1,44 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+// O caminho correto para sair da pasta 'cadastro' e entrar em 'services'
+import { ProdutoService } from '../../services/produto'; 
 
 @Component({
   selector: 'app-cadastro',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './cadastro.component.html'
+  imports: [CommonModule, FormsModule, HttpClientModule],
+  templateUrl: './cadastro.component.html',
+  providers: [ProdutoService]
 })
 export class CadastroComponent {
-  // Objeto que vai guardar os dados do formulário
-  cliente = {
+  
+  // Objeto que o HTML usa para preencher os campos
+  produto: any = {
     nome: '',
-    email: '',
-    endereco: ''
+    descricao: '',
+    preco: 0,
+    imagem_url: '',
+    estoque: 0, 
+    disponivel: true
   };
 
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  constructor(private produtoService: ProdutoService) {}
 
-  finalizarPedido() {
-    // Aqui você enviaria para uma rota de "pedidos" no seu Node.js
-    // Por enquanto, vamos simular o sucesso e levar para o pagamento
-    console.log('Dados do Cliente:', this.cliente);
-    alert('Cadastro realizado com sucesso! Vamos ao pagamento.');
-    this.router.navigate(['/pagamento']);
+  salvar() {
+    console.log('Enviando para o servidor:', this.produto);
+    
+    this.produtoService.create(this.produto).subscribe({
+      next: (res) => {
+        alert('Manto ' + this.produto.nome + ' cadastrado com estoque de ' + this.produto.estoque + '! ✅');
+        // Reseta o formulário
+        this.produto = { nome: '', descricao: '', preco: 0, imagem_url: '', estoque: 0, disponivel: true };
+      },
+      error: (err) => {
+        console.error('Erro ao salvar:', err);
+        alert('Erro ao cadastrar. Verifique se o seu BACKEND está ligado!');
+      }
+    });
   }
 }

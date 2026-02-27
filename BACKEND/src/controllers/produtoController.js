@@ -3,13 +3,16 @@ const connection = require('../database/connection');
 module.exports = {
     async create(req, res) {
         try {
-            const { nome, descricao, preco, imagem_url, disponivel } = req.body;
+            // Incluindo 'estoque' na desestruturação para o Admin poder enviar
+            const { nome, descricao, preco, imagem_url, disponivel, estoque } = req.body;
 
             await connection('produtos').insert({
                 nome,
                 descricao,
                 preco,
                 imagem_url,
+                // Adicionando a lógica de estoque: se não vier nada, assume 0
+                estoque: estoque || 0,
                 disponivel: disponivel !== undefined ? disponivel : true
             });
 
@@ -35,7 +38,8 @@ module.exports = {
     async update(req, res) {
         try {
             const { id } = req.params;
-            const { nome, descricao, preco, imagem_url, disponivel } = req.body;
+            // Adicionando 'estoque' aqui para o Admin poder editar a quantidade depois
+            const { nome, descricao, preco, imagem_url, disponivel, estoque } = req.body;
 
             const resultado = await connection('produtos')
                 .where('id', id)
@@ -44,6 +48,7 @@ module.exports = {
                     descricao,
                     preco,
                     imagem_url,
+                    estoque, // Atualiza a quantidade de camisas no estoque
                     disponivel: disponivel !== undefined ? disponivel : true
                 });
 

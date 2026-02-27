@@ -1,56 +1,71 @@
-<div class="admin-container" style="padding: 20px; max-width: 900px; margin: auto; font-family: sans-serif;">
-  <div class="card-admin" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-    <h2 style="text-align: center; color: #333;">Gestão de Mantos ⚽</h2>
-    
-    <form (ngSubmit)="salvarProduto()" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-      
-      <div style="display: flex; flex-direction: column; gap: 15px;">
-        <div>
-          <label><b>Nome do Manto:</b></label>
-          <input type="text" [(ngModel)]="produto.nome" name="nome" placeholder="Ex: Grêmio Home 2026" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+<div class="container mt-4">
+  <div class="card p-4 shadow-sm border-0 mx-auto" style="border-radius: 20px; max-width: 1000px; background-color: white;">
+    <h2 class="text-center mb-4 fw-bold">Gestão de Mantos ⚽</h2>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label fw-bold">Nome do Manto:</label>
+          <input type="text" [(ngModel)]="produto.nome" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Ex: Grêmio Home 2026">
         </div>
-        <div>
-          <label><b>Preço (R$):</b></label>
-          <input type="number" [(ngModel)]="produto.preco" name="preco" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Preço (R$):</label>
+          <input type="number" [(ngModel)]="produto.preco" class="form-control form-control-lg" style="border-radius: 10px;">
         </div>
-        <button type="submit" [disabled]="carregando" [style.background]="editando ? '#007bff' : '#28a745'" style="color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px;">
-          {{ carregando ? 'SALVANDO...' : (editando ? 'SALVAR ALTERAÇÕES 🔄' : 'CADASTRAR MANTO ✅') }}
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Quantidade em Estoque:</label>
+          <input type="number" [(ngModel)]="produto.estoque" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="0">
+        </div>
+
+        <button (click)="salvar()" class="btn btn-success w-100 fw-bold py-3 mt-2 shadow-sm" style="border-radius: 12px; font-size: 1.1rem;">
+          CADASTRAR MANTO ✅
         </button>
       </div>
 
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed #ccc; border-radius: 15px; padding: 20px; background: #fafafa;">
-        <label style="cursor: pointer; text-align: center;">
-          <span style="display: block; font-size: 40px;">📸</span>
-          <b>Clique para Escolher a Foto</b>
-          <input type="file" (change)="aoSelecionarArquivo($event)" accept="image/*" style="display: none;">
-        </label>
-        
-        <div *ngIf="previewImagem" style="margin-top: 15px;">
-          <img [src]="previewImagem" style="max-width: 150px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+      <div class="col-md-6">
+        <div class="border rounded d-flex flex-column align-items-center justify-content-center bg-light h-100 p-4" 
+             style="min-height: 280px; border-style: dashed !important; border-width: 2px; border-radius: 20px; border-color: #dee2e6 !important;">
+          
+          <img *ngIf="produto.imagem_url" [src]="produto.imagem_url" style="max-height: 180px;" class="img-fluid mb-3">
+          
+          <div class="text-center text-muted">
+            <span style="font-size: 45px;">📷</span>
+            <p class="mt-2 fw-bold mb-0">Clique para Escolher a Foto</p>
+          </div>
         </div>
       </div>
-    </form>
+    </div>
 
-    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
+    <div class="mt-5">
+      <div class="input-group mb-4 shadow-sm" style="border-radius: 25px; overflow: hidden;">
+        <span class="input-group-text bg-white border-end-0 ps-3">🔍</span>
+        <input type="text" [(ngModel)]="filtro" class="form-control border-start-0 py-2" placeholder="Pesquisar na sua coleção...">
+      </div>
 
-    <input type="text" [(ngModel)]="filtroNome" (input)="filtrarProdutos()" placeholder="🔍 Pesquisar na sua coleção..." style="width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 30px; margin-bottom: 20px; font-size: 16px;">
+      <div *ngFor="let p of produtosFiltrados" class="d-flex align-items-center justify-content-between border-bottom py-3 px-2">
+        <div class="d-flex align-items-center">
+          <div class="bg-light p-2 rounded-3 me-3 shadow-sm">
+            <img [src]="p.imagem_url || 'assets/camisa-exemplo.png'" style="width: 50px; height: 50px; object-fit: contain;">
+          </div>
+          <div>
+            <h6 class="mb-0 fw-bold text-dark">{{p.nome}}</h6>
+            <div class="d-flex gap-3 align-items-center">
+              <span class="text-success fw-bold small">R$ {{p.preco | number:'1.2-2'}}</span>
+              <span class="text-muted small">Estoque: <strong class="text-dark">{{p.estoque}}</strong></span>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-primary btn-sm px-3" style="border-radius: 8px;">Editar</button>
+          <button class="btn btn-outline-danger btn-sm px-3" style="border-radius: 8px;">Excluir</button>
+        </div>
+      </div>
 
-    <div style="max-height: 400px; overflow-y: auto;">
-      <table style="width: 100%; border-collapse: collapse;">
-        <tr *ngFor="let p of produtosFiltrados; trackBy: trackByProdutoId" style="border-bottom: 1px solid #eee;">
-          <td style="padding: 15px;">
-            <img [src]="p.imagem_url" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; background: #eee;">
-          </td>
-          <td style="padding: 15px;">
-            <b style="font-size: 16px;">{{ p.nome }}</b><br>
-            <span style="color: #28a745; font-weight: bold;">R$ {{ p.preco }}</span>
-          </td>
-          <td style="padding: 15px; text-align: right;">
-            <button (click)="prepararEdicao(p)" style="background: none; border: 1px solid #007bff; color: #007bff; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-right: 5px;">Editar</button>
-            <button (click)="deletarProduto(p.id)" style="background: none; border: 1px solid #dc3545; color: #dc3545; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Excluir</button>
-          </td>
-        </tr>
-      </table>
+      <div *ngIf="produtosFiltrados.length === 0" class="text-center py-4 text-muted">
+        Nenhum manto encontrado com "{{filtro}}". 👕
+      </div>
     </div>
   </div>
 </div>
