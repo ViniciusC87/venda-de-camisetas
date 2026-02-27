@@ -44,27 +44,34 @@
         <input type="text" [(ngModel)]="filtro" class="form-control border-start-0 py-2" placeholder="Pesquisar na sua coleção...">
       </div>
 
+      <h5 class="fw-bold mb-3">Sua Coleção Atual:</h5>
+
       <div *ngFor="let p of produtosFiltrados" class="d-flex align-items-center justify-content-between border-bottom py-3 px-2">
         <div class="d-flex align-items-center">
           <div class="bg-light p-2 rounded-3 me-3 shadow-sm">
             <img [src]="p.imagem_url || 'assets/camisa-exemplo.png'" style="width: 50px; height: 50px; object-fit: contain;">
           </div>
           <div>
-            <h6 class="mb-0 fw-bold text-dark">{{p.nome}}</h6>
+            <h6 class="mb-0 fw-bold text-dark">{{ p.nome }}</h6>
             <div class="d-flex gap-3 align-items-center">
-              <span class="text-success fw-bold small">R$ {{p.preco | number:'1.2-2'}}</span>
-              <span class="text-muted small">Estoque: <strong class="text-dark">{{p.estoque}}</strong></span>
+              <span class="text-success fw-bold small">R$ {{ p.preco | number:'1.2-2' }}</span>
+              <span class="text-muted small">Estoque: <strong class="text-dark">{{ p.estoque }}</strong></span>
             </div>
           </div>
         </div>
+        
         <div class="d-flex gap-2">
-          <button class="btn btn-outline-primary btn-sm px-3" style="border-radius: 8px;">Editar</button>
-          <button class="btn btn-outline-danger btn-sm px-3" style="border-radius: 8px;">Excluir</button>
+          <button class="btn btn-outline-primary btn-sm px-3" style="border-radius: 8px;">
+            Editar
+          </button>
+          <button (click)="excluir(p.id)" class="btn btn-outline-danger btn-sm px-3" style="border-radius: 8px;">
+            Excluir
+          </button>
         </div>
       </div>
 
-      <div *ngIf="produtosFiltrados.length === 0" class="text-center py-4 text-muted">
-        Nenhum manto encontrado com "{{filtro}}". 👕
+      <div *ngIf="produtosFiltrados.length === 0" class="text-center py-5">
+        <p class="text-muted fw-bold">Nenhum manto encontrado com "{{ filtro }}". 👕</p>
       </div>
     </div>
   </div>

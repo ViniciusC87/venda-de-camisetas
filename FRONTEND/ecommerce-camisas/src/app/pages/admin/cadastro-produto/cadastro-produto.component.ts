@@ -11,15 +11,11 @@ import { ProdutoService } from '../../../services/produto';
 })
 export class CadastrarProdutoComponent implements OnInit {
   produtos: any[] = [];
-  filtro: string = ''; // Variável que vai guardar o que você digita na lupa
-  
-  produto: any = {
-    nome: '',
-    preco: 0,
-    estoque: 0,
-    imagem_url: '',
-    disponivel: true
-  };
+  filtro: string = '';
+  // SEU TOKEN SALVO
+  token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzY0Njk4OTE2LCJleHAiOjE3NjUzMDM3MTZ9.h7NqR__ufGA7huy-11HoslOj_0yHgVABZnkhF2J04ao';
+
+  produto: any = { nome: '', preco: 0, estoque: 0, imagem_url: '', disponivel: true };
 
   constructor(private produtoService: ProdutoService) {}
 
@@ -34,36 +30,39 @@ export class CadastrarProdutoComponent implements OnInit {
     });
   }
 
-  // ESSA É A FUNÇÃO QUE FAZ A LUPA FUNCIONAR:
   get produtosFiltrados() {
-    return this.produtos.filter(p => 
-      p.nome.toLowerCase().includes(this.filtro.toLowerCase())
-    );
+    return this.produtos.filter(p => p.nome.toLowerCase().includes(this.filtro.toLowerCase()));
   }
 
   salvar() {
-    if (!this.produto.nome) {
-      alert('Por favor, dê um nome ao manto!');
-      return;
-    }
-
-    this.produtoService.create(this.produto).subscribe({
+    if (!this.produto.nome) { return alert('Dê um nome ao manto!'); }
+    
+    this.produtoService.create(this.produto, this.token).subscribe({
       next: () => {
-        alert('Manto ' + this.produto.nome + ' cadastrado com estoque de ' + this.produto.estoque + '! ✅');
+        alert('Manto cadastrado! ✅');
         this.carregarProdutos();
         this.resetarForm();
       },
-      error: (err) => alert('Erro ao salvar no banco de dados.')
+      error: () => alert('Erro ao salvar. Verifique o console.')
     });
   }
 
+  excluir(id: number) {
+    if (confirm('Deseja mesmo apagar esse manto?')) {
+      this.produtoService.excluir(id, this.token).subscribe({
+        next: () => {
+          alert('Removido com sucesso! 🗑️');
+          this.carregarProdutos();
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Erro ao excluir! Verifique se você está logado.');
+        }
+      });
+    }
+  }
+
   private resetarForm() {
-    this.produto = {
-      nome: '',
-      preco: 0,
-      estoque: 0,
-      imagem_url: '',
-      disponivel: true
-    };
+    this.produto = { nome: '', preco: 0, estoque: 0, imagem_url: '', disponivel: true };
   }
 }
