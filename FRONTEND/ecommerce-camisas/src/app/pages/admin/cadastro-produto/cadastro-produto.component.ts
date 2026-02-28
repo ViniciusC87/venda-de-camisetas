@@ -10,59 +10,110 @@ import { ProdutoService } from '../../../services/produto';
   templateUrl: './cadastro-produto.component.html'
 })
 export class CadastrarProdutoComponent implements OnInit {
+
   produtos: any[] = [];
   filtro: string = '';
-  // SEU TOKEN SALVO
-  token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzY0Njk4OTE2LCJleHAiOjE3NjUzMDM3MTZ9.h7NqR__ufGA7huy-11HoslOj_0yHgVABZnkhF2J04ao';
+  token = 'SEU_TOKEN_AQUI';
+  editando = false;
 
-  produto: any = { nome: '', preco: 0, estoque: 0, imagem_url: '', disponivel: true };
+  produto: any = {
+    id: null,
+    nome: '',
+    preco: 0,
+    estoque: 0,
+    imagem_url: '',
+    disponivel: true
+  };
 
   constructor(private produtoService: ProdutoService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.carregarProdutos();
   }
 
-  carregarProdutos() {
+  carregarProdutos(): void {
     this.produtoService.listarTodos().subscribe({
       next: (res: any) => this.produtos = res,
-      error: (err) => console.error('Erro ao buscar produtos:', err)
+      error: (err) => console.error(err)
     });
   }
 
   get produtosFiltrados() {
-    return this.produtos.filter(p => p.nome.toLowerCase().includes(this.filtro.toLowerCase()));
+    return this.produtos.filter(p =>
+      p.nome?.toLowerCase().includes(this.filtro.toLowerCase())
+    );
   }
 
-  salvar() {
-    if (!this.produto.nome) { return alert('Dê um nome ao manto!'); }
-    
-    this.produtoService.create(this.produto, this.token).subscribe({
-      next: () => {
-        alert('Manto cadastrado! ✅');
-        this.carregarProdutos();
-        this.resetarForm();
-      },
-      error: () => alert('Erro ao salvar. Verifique o console.')
-    });
-  }
+  salvar(): void {
 
-  excluir(id: number) {
-    if (confirm('Deseja mesmo apagar esse manto?')) {
-      this.produtoService.excluir(id, this.token).subscribe({
-        next: () => {
-          alert('Removido com sucesso! 🗑️');
+    if (!this.produto.nome) {
+      alert('Dê um nome ao manto!');
+      return;
+    }
+
+    if (this.editando) {
+      this.produtoService
+        .atualizar(this.produto.id, this.produto, this.token)
+        .subscribe(() => {
+          alert('Manto atualizado! 🔄');
           this.carregarProdutos();
-        },
-        error: (err) => {
-          console.error(err);
-          alert('Erro ao excluir! Verifique se você está logado.');
-        }
-      });
+          this.resetarForm();
+        });
+
+    } else {
+      this.produtoService
+        .create(this.produto, this.token)
+        .subscribe(() => {
+          alert('Manto cadastrado! ✅');
+          this.carregarProdutos();
+          this.resetarForm();
+        });
     }
   }
 
-  private resetarForm() {
-    this.produto = { nome: '', preco: 0, estoque: 0, imagem_url: '', disponivel: true };
+  editar(p: any): void {
+    this.produto = { ...p };
+    this.editando = true;
+  }
+
+  excluir(id: number): void {
+    if (confirm('Deseja mesmo apagar esse manto?')) {
+      this.produtoService.excluir(id, this.token)
+        .subscribe(() => this.carregarProdutos());
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Selecione apenas imagens.');
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.produto.imagem_url = reader.result as string;
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  removerImagem(): void {
+    this.produto.imagem_url = '';
+  }
+
+  private resetarForm(): void {
+    this.produto = {
+      id: null,
+      nome: '',
+      preco: 0,
+      estoque: 0,
+      imagem_url: '',
+      disponivel: true
+    };
+    this.editando = false;
   }
 }

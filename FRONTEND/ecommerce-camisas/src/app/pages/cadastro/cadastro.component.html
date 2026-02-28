@@ -4,32 +4,74 @@
 
     <div class="row">
       <div class="col-md-6">
+
         <div class="mb-3">
           <label class="form-label fw-bold">Nome do Manto:</label>
-          <input type="text" [(ngModel)]="produto.nome" name="nome" class="form-control" placeholder="Ex: Grêmio Home 2026">
+          <input type="text" [(ngModel)]="produto.nome" class="form-control">
         </div>
 
         <div class="mb-3">
           <label class="form-label fw-bold">Preço (R$):</label>
-          <input type="number" [(ngModel)]="produto.preco" name="preco" class="form-control">
+          <input type="number" [(ngModel)]="produto.preco" class="form-control">
         </div>
 
         <div class="mb-3">
           <label class="form-label fw-bold">Quantidade em Estoque:</label>
-          <input type="number" [(ngModel)]="produto.estoque" name="estoque" class="form-control" placeholder="0">
+          <input type="number" [(ngModel)]="produto.estoque" class="form-control">
+        </div>
+
+        <!-- CAMPO DE IMAGEM -->
+        <div class="mb-3 text-center">
+          <label class="form-label fw-bold d-block">Imagem do Manto:</label>
+
+          <label class="btn btn-outline-secondary">
+            📷 Escolher Imagem
+            <input type="file"
+                   hidden
+                   accept="image/*"
+                   (change)="onFileSelected($event)">
+          </label>
+
+          <div class="mt-3" *ngIf="produto.imagem_url">
+            <img [src]="produto.imagem_url"
+                 width="150"
+                 class="rounded shadow-sm">
+          </div>
         </div>
 
         <button (click)="salvar()" class="btn btn-success w-100 fw-bold py-2 shadow-sm">
-          CADASTRAR MANTO ✅
+          {{ editando ? 'ATUALIZAR MANTO 🔄' : 'CADASTRAR MANTO ✅' }}
         </button>
-      </div>
 
-      <div class="col-md-6 d-flex align-items-center justify-content-center">
-        <div class="border rounded d-flex flex-column align-items-center justify-content-center bg-light w-100" 
-             style="height: 250px; border-style: dashed !important; border-width: 2px;">
-          <span style="font-size: 40px;">📷</span>
-          <p class="mt-2 fw-bold text-secondary">Clique para Escolher a Foto</p>
-        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <h3>Lista de Mantos</h3>
+
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let p of produtos">
+      <div class="card p-3 shadow-sm">
+
+        <img *ngIf="p.imagem_url"
+             [src]="p.imagem_url"
+             class="img-fluid mb-2 rounded"
+             style="height:150px; object-fit:cover;">
+
+        <h5>{{ p.nome }}</h5>
+        <p>R$ {{ p.preco }}</p>
+        <p>Estoque: {{ p.estoque }}</p>
+
+        <button class="btn btn-primary btn-sm me-2" (click)="editar(p)">
+          Editar
+        </button>
+
+        <button class="btn btn-danger btn-sm" (click)="excluir(p.id)">
+          Excluir
+        </button>
+
       </div>
     </div>
   </div>
