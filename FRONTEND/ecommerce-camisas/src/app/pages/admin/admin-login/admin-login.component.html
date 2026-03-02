@@ -1,0 +1,21 @@
+<div class="container mt-5">
+  <div class="card shadow-sm border-0 mx-auto p-4"
+       style="max-width: 400px; border-radius: 15px;">
+
+    <h4 class="text-center fw-bold mb-4">Login Administrativo 🔐</h4>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold">Senha:</label>
+      <input type="password"
+             [(ngModel)]="senha"
+             class="form-control"
+             placeholder="Digite a senha">
+    </div>
+
+    <button (click)="login()"
+            class="btn btn-dark w-100 fw-bold">
+      Entrar
+    </button>
+
+  </div>
+</div>
