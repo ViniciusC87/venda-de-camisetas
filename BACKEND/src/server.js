@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-
 const express = require('express');
 // instanciando o framework express dentro da variavel express
 const cors = require('cors'); 
@@ -27,7 +26,14 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(routes);
 // use() esta chamando a variavel app(express) ligar-se ao arquivo routes que tem as rotas do site
 
-app.listen(PORT, () => {
-// usando as as funcionalidades da variavel instanciada app para rodar o que esta na port 3000
-    console.log('🚀 Servidor ativo e aceitando imagens pesadas! 🚀');
-});
+// Verificação para rodar o listen apenas localmente (não trava na Vercel)
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        // usando as as funcionalidades da variavel instanciada app para rodar o que esta na port 3000
+        console.log('🚀 Servidor ativo e aceitando imagens pesadas! 🚀');
+    });
+}
+
+// O SEGREDO PARA A VERCEL FUNCIONAR: 
+// Estamos exportando as configurações do app para que a Vercel possa rodar o servidor como uma função na nuvem.
+module.exports = app;
