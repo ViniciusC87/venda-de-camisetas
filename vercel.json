@@ -1,17 +1,10 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/api/produtos(.*)",
-      "destination": "BACKEND/src/server.ts"
-    },
-    {
-      "source": "/produtos(.*)",
-      "destination": "BACKEND/src/server.ts"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/FRONTEND/ecommerce-camisetas/dist/ecommerce-camisetas/index.html"
-    }
+  "builds": [
+    { "src": "api/index.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "api/index.js" },
+    { "src": "/(.*)", "dest": "/FRONTEND/ecommerce-camisetas/dist/ecommerce-camisetas/index.html" }
   ]
 }
