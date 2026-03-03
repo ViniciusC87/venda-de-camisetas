@@ -1,3 +1,6 @@
+require('dotenv').config();
+
+
 const express = require('express');
 // instanciando o framework express dentro da variavel express
 const cors = require('cors'); 
@@ -7,8 +10,7 @@ const routes = require('./routes');
 
 const app = express();
 // estanciando as funcionalidades do variavel express(que tem nela o framework express) na variavel app
-
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 // informando que a porta logica que vamos trabalhar é a 3000
 
 app.use(cors());
