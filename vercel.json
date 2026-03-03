@@ -1,21 +1,17 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "BACKEND/src/server.ts", "use": "@vercel/node" },
-    { "src": "FRONTEND/ecommerce-camisetas/package.json", "use": "@vercel/static-build" }
-  ],
   "rewrites": [
     {
-      "source": "/produtos/:path*",
-      "destination": "/api/produtos/:path*"
+      "source": "/api/produtos(.*)",
+      "destination": "BACKEND/src/server.ts"
     },
     {
-      "source": "/api/(.*)",
+      "source": "/produtos(.*)",
       "destination": "BACKEND/src/server.ts"
     },
     {
       "source": "/(.*)",
-      "destination": "FRONTEND/ecommerce-camisetas/dist/ecommerce-camisetas/$1"
+      "destination": "/FRONTEND/ecommerce-camisetas/dist/ecommerce-camisetas/index.html"
     }
   ]
 }
