@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProdutoService {
 
-  private apiUrl = 'http://localhost:3000/produtos';
+  private apiUrl = 'https://venda-de-camisetas.vercel.app/produtos';
 
   constructor(private http: HttpClient) {}
 
