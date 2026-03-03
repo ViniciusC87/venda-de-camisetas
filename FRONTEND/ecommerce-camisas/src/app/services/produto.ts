@@ -16,16 +16,21 @@ export class ProdutoService {
   }
 
   private getHeaders(token?: string) {
-    if (token) {
+    // AQUI ESTÁ A MUDANÇA NA LINHA 19/20:
+    // Se o token não vier por parâmetro, ele tenta pegar o que o Login salvou
+    const activeToken = token || localStorage.getItem('token');
+    
+    if (activeToken) {
       return {
         headers: new HttpHeaders({
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${activeToken}`
         })
       };
     }
     return {};
   }
 
+  // Mantive exatamente os nomes das suas funções: create, atualizar e excluir
   create(produto: any, token?: string): Observable<any> {
     return this.http.post(this.apiUrl, produto, this.getHeaders(token));
   }
